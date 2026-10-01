@@ -17,13 +17,13 @@
             <div class="d-flex gap-2 flex-wrap">
                 <a href="{{ route('pos.index') }}" class="btn btn-primary btn-sm px-3 d-flex align-items-center gap-2" style="background: var(--primary); border-color: var(--primary);">
                     <iconify-icon icon="lucide:shopping-cart"></iconify-icon>
-                    Buka Kasir / POS
+                    Buka Kasir
                 </a>
-                <a href="{{ route('purchases.index') }}" class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center gap-2 bg-white">
+                <a href="{{ route('purchases.index') }}" class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center gap-2">
                     <iconify-icon icon="lucide:clipboard-check"></iconify-icon>
                     Barang Masuk
                 </a>
-                <a href="{{ route('stock-opname.index') }}" class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center gap-2 bg-white">
+                <a href="{{ route('stock-opname.index') }}" class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center gap-2">
                     <iconify-icon icon="lucide:boxes"></iconify-icon>
                     Stock Opname
                 </a>
@@ -195,7 +195,7 @@
             <div class="card border-0 shadow-sm rounded-3 h-100">
                 <div class="card-header bg-white border-bottom py-3 px-3 d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center gap-2">
-                        <iconify-icon icon="lucide:receipt" class="text-primary fs-5"></iconify-icon>
+                        <iconify-icon icon="icon-park-outline:transaction-order" class="text-primary fs-5"></iconify-icon>
                         <h2 class="card-title fw-bold text-slate-800 fs-6 mb-0">Transaksi Terkini</h2>
                     </div>
                     <a href="{{ route('transactions.index') }}" class="text-xs text-primary text-decoration-none fw-semibold">

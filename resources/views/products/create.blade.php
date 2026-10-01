@@ -120,7 +120,7 @@
                             </label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light text-muted">Rp</span>
-                                <input type="number" name="purchase_price" id="purchase_price" min="0" step="50" class="form-control form-control-simple font-mono tabular-nums @error('purchase_price') is-invalid @enderror" value="{{ old('purchase_price', 0) }}" required oninput="calculateMargin()">
+                                <input type="number" name="purchase_price" id="purchase_price" min="0" step="any" class="form-control form-control-simple font-mono tabular-nums @error('purchase_price') is-invalid @enderror" value="{{ old('purchase_price', 0) }}" required oninput="calculateMargin()">
                             </div>
                             @error('purchase_price')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -133,7 +133,7 @@
                             </label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light text-muted">Rp</span>
-                                <input type="number" name="selling_price" id="selling_price" min="0" step="50" class="form-control form-control-simple font-mono tabular-nums @error('selling_price') is-invalid @enderror" value="{{ old('selling_price', 0) }}" required oninput="calculateMargin()">
+                                <input type="number" name="selling_price" id="selling_price" min="0" step="any" class="form-control form-control-simple font-mono tabular-nums @error('selling_price') is-invalid @enderror" value="{{ old('selling_price', 0) }}" required oninput="calculateMargin()">
                             </div>
                             @error('selling_price')
                                 <div class="invalid-feedback">{{ $message }}</div>

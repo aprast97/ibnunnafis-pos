@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 class SaleController extends Controller
 {
     /**
-     * Halaman Utama Kasir / POS
+     * Halaman Utama Kasir
      */
     public function index()
     {

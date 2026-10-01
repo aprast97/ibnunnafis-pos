@@ -11,6 +11,7 @@ use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -94,8 +95,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/stock-opname/{stock_opname}', [StockOpnameController::class, 'show'])->name('stock-opname.show');
     Route::get('/stock-opname/{stock_opname}/print', [StockOpnameController::class, 'printSlip'])->name('stock-opname.print');
 
-    // Admin Specific Actions (Pembatalan Transaksi)
+    // Admin Specific Actions (Pembatalan Transaksi & Manajemen Pengguna)
     Route::middleware('role:Admin')->group(function () {
         Route::patch('/transactions/{sale}/cancel', [SaleController::class, 'cancel'])->name('transactions.cancel');
+
+        // User Management CRUD (Admin Only)
+        Route::resource('users', UserController::class)->except(['show', 'create', 'edit']);
     });
 });

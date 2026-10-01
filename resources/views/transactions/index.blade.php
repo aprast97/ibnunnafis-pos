@@ -80,7 +80,7 @@
             @if(auth()->user()->isKasir())
             <a href="{{ route('pos.index') }}" class="btn btn-primary btn-sm d-flex align-items-center gap-2" style="background: var(--primary); border-color: var(--primary);">
                 <iconify-icon icon="lucide:shopping-cart" class="fs-6"></iconify-icon>
-                <span>Buka Layar Kasir / POS</span>
+                <span>Buka Layar Kasir</span>
             </a>
             @endif
         </div>
@@ -216,7 +216,7 @@
                                     @if($search || $startDate || $endDate || $status !== 'all')
                                         Tidak ditemukan transaksi yang sesuai dengan kriteria filter pencarian.
                                     @else
-                                        Mulai transaksi penjualan baru menggunakan menu Kasir / POS.
+                                        Mulai transaksi penjualan baru menggunakan menu Kasir.
                                     @endif
                                 </p>
                                 @if(auth()->user()->isKasir())

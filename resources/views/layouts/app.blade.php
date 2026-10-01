@@ -40,7 +40,7 @@
                     </div>
                     <div class="sidebar-title">
                         <h2>Kantin Ibnunnafis</h2>
-                        <span>Depok • POS & Persediaan</span>
+                        <span>Sistem Informasi Penjualan & Persediaan</span>
                     </div>
                 </div>
                 <button type="button" class="btn-icon sidebar-close-btn d-lg-none" onclick="toggleSidebar(false)">
@@ -100,16 +100,24 @@
                     <iconify-icon icon="lucide:bar-chart-3"></iconify-icon>
                     Laporan Penjualan
                 </a>
+
+                @if(auth()->user()->isAdmin())
+                <div class="nav-heading">Pengaturan Sistem</div>
+                <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                    <iconify-icon icon="lucide:users-round"></iconify-icon>
+                    Kelola Pengguna
+                </a>
+                @endif
             </nav>
 
             <div class="sidebar-footer">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <div class="avatar-circle">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center min-w-0">
+                        <div class="avatar-circle {{ auth()->user()->isAdmin() ? 'avatar-admin' : 'avatar-kasir' }}">
                             {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                         </div>
                         <div class="user-meta">
-                            <span class="user-name">{{ auth()->user()->name }}</span>
+                            <span class="user-name" title="{{ auth()->user()->name }}">{{ auth()->user()->name }}</span>
                             <span class="badge {{ auth()->user()->isKasir() ? 'badge-primary' : 'badge-warning' }}">
                                 {{ auth()->user()->role?->name }}
                             </span>
@@ -137,22 +145,22 @@
                     </div>
 
                     <div class="dropdown">
-                        <button class="btn btn-outline-light text-dark border flex items-center gap-2" type="button" data-bs-toggle="dropdown">
-                            <iconify-icon icon="lucide:user"></iconify-icon>
-                            <span class="d-none d-sm-inline">{{ auth()->user()->name }}</span>
-                            <span class="badge {{ auth()->user()->isKasir() ? 'badge-primary' : 'badge-warning' }} ms-1">
+                        <button class="btn btn-sm btn-outline-light text-dark border flex items-center gap-1.5 py-1 px-2.5 text-xs shadow-2xs" type="button" data-bs-toggle="dropdown" style="min-height: 34px; font-size: 0.8rem;">
+                            <iconify-icon icon="lucide:user" class="fs-6"></iconify-icon>
+                            <span class="d-none d-sm-inline fw-semibold">{{ auth()->user()->name }}</span>
+                            <span class="badge {{ auth()->user()->isKasir() ? 'badge-primary' : 'badge-warning' }} ms-1" style="font-size: 0.65rem; padding: 0.15rem 0.45rem;">
                                 {{ auth()->user()->role?->name }}
                             </span>
-                            <iconify-icon icon="lucide:chevron-down"></iconify-icon>
+                            <iconify-icon icon="lucide:chevron-down" class="fs-6 text-muted"></iconify-icon>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 0.825rem; min-width: 200px;">
                             <li class="px-3 py-2 border-bottom">
-                                <span class="d-block fw-bold text-sm">{{ auth()->user()->name }}</span>
-                                <span class="text-xs text-muted">{{ auth()->user()->email }}</span>
+                                <span class="d-block fw-bold text-xs text-slate-800">{{ auth()->user()->name }}</span>
+                                <span class="text-2xs text-muted font-mono">{{ auth()->user()->email }}</span>
                             </li>
-                            <li>
-                                <button type="button" class="dropdown-item text-danger flex items-center gap-2 mt-1" onclick="confirmLogout()">
-                                    <iconify-icon icon="lucide:log-out"></iconify-icon>
+                            <li class="p-1">
+                                <button type="button" class="dropdown-item text-danger rounded-2 flex items-center gap-2 py-1.5 px-2.5 text-xs fw-semibold" onclick="confirmLogout()">
+                                    <iconify-icon icon="lucide:log-out" class="fs-6"></iconify-icon>
                                     Keluar (Logout)
                                 </button>
                             </li>
@@ -261,6 +269,46 @@
     @endif
 
     <script>
+                document.addEventListener('DOMContentLoaded', function() {
+            // 1. Auto-relocate modals to <body> to prevent stacking context or backdrop trap
+            document.querySelectorAll('.modal').forEach(function(modal) {
+                if (modal.parentElement !== document.body) {
+                    document.body.appendChild(modal);
+                }
+            });
+
+            // 2. Preserve & restore sidebar scroll position and keep active menu in view
+            const sidebarNav = document.querySelector('.sidebar-nav');
+            if (sidebarNav) {
+                const savedScroll = sessionStorage.getItem('sidebarNavScrollTop');
+                if (savedScroll !== null) {
+                    sidebarNav.scrollTop = parseInt(savedScroll, 10);
+                }
+
+                // Ensure active menu item is scrolled into view (e.g. Riwayat Transaksi / Laporan)
+                const activeLink = sidebarNav.querySelector('.nav-link.active');
+                if (activeLink) {
+                    activeLink.scrollIntoView({ block: 'nearest' });
+                }
+
+                // Save scroll position when user scrolls sidebar
+                sidebarNav.addEventListener('scroll', function() {
+                    sessionStorage.setItem('sidebarNavScrollTop', sidebarNav.scrollTop);
+                }, { passive: true });
+
+                // Also save on clicking any navigation link
+                sidebarNav.querySelectorAll('.nav-link').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        sessionStorage.setItem('sidebarNavScrollTop', sidebarNav.scrollTop);
+                    });
+                });
+
+                window.addEventListener('beforeunload', function() {
+                    sessionStorage.setItem('sidebarNavScrollTop', sidebarNav.scrollTop);
+                });
+            }
+        });
+
         function toggleSidebar(open) {
             const sidebar = document.getElementById('appSidebar');
             const backdrop = document.getElementById('sidebarBackdrop');

@@ -45,20 +45,20 @@
             <div class="mb-3">
                 <label for="username" class="form-label fw-semibold text-xs text-uppercase text-muted">ID Pengguna</label>
                 <div class="input-group">
-                    <span class="input-group-text bg-light text-muted border-end-0">
-                        <iconify-icon icon="lucide:user"></iconify-icon>
+                    <span class="input-group-text bg-light text-muted border-end-0 ps-3 pe-2">
+                        <iconify-icon icon="lucide:user" class="fs-5"></iconify-icon>
                     </span>
-                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="10" name="username" id="username" class="form-control border-start-0 ps-0 tabular-nums @error('username') is-invalid @enderror" value="{{ old('username') }}" placeholder="Contoh: 12345" autocomplete="off" required autofocus style="letter-spacing: 0.05em; font-weight: 600;">
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="10" name="username" id="username" class="form-control border-start-0 ps-2 tabular-nums @error('username') is-invalid @enderror" value="{{ old('username') }}" placeholder="Contoh: 12345" autocomplete="off" required autofocus style="letter-spacing: 0.05em; font-weight: 600;">
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="password" class="form-label fw-semibold text-xs text-uppercase text-muted">PASSWORD</label>
                 <div class="input-group">
-                    <span class="input-group-text bg-light text-muted border-end-0">
-                        <iconify-icon icon="lucide:lock"></iconify-icon>
+                    <span class="input-group-text bg-light text-muted border-end-0 ps-3 pe-2">
+                        <iconify-icon icon="lucide:lock" class="fs-5"></iconify-icon>
                     </span>
-                    <input type="password" name="password" id="password" class="form-control border-start-0 ps-0 @error('password') is-invalid @enderror" value="" placeholder="•••••" autocomplete="off" required>
+                    <input type="password" name="password" id="password" class="form-control border-start-0 ps-2 @error('password') is-invalid @enderror" value="" placeholder="•••••" autocomplete="off" required>
                 </div>
             </div>
 
