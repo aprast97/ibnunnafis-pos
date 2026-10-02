@@ -23,7 +23,7 @@
             print-color-adjust: exact;
         }
         .action-bar {
-            max-width: 320px;
+            max-width: 300px;
             margin: 0 auto 12px auto;
             display: flex;
             gap: 8px;
@@ -63,11 +63,11 @@
             margin: 0 auto;
             background: #ffffff;
             width: 100%;
-            max-width: 320px;
-            padding: 16px 14px;
+            max-width: 290px;
+            padding: 14px 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12.5px;
             line-height: 1.35;
             color: #000000;
         }
@@ -76,27 +76,27 @@
         .text-start { text-align: left; }
         .fw-bold { font-weight: bold; }
         .font-mono { font-family: 'Courier New', Courier, monospace; }
-        .d-flex-between { display: flex; justify-content: space-between; }
-        .store-title { font-size: 16px; font-weight: 900; letter-spacing: 0.5px; }
-        .store-subtitle { font-size: 11px; margin-top: 2px; }
-        .meta-section { font-size: 11.5px; margin-top: 4px; font-weight: 600; }
+        .d-flex-between { display: flex; justify-content: space-between; gap: 4px; }
+        .store-title { font-size: 15px; font-weight: 900; letter-spacing: 0.5px; }
+        .store-subtitle { font-size: 10.5px; margin-top: 2px; }
+        .meta-section { font-size: 11px; margin-top: 4px; font-weight: 600; }
         .dashed-line {
             border-top: 1px dashed #000000;
-            margin: 8px 0;
+            margin: 6px 0;
         }
         .double-line {
             border-top: 2px dashed #000000;
-            margin: 8px 0;
+            margin: 6px 0;
         }
         .table-items {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 11.5px;
         }
         .table-items th {
             padding: 4px 0;
             border-bottom: 1px dashed #000000;
-            font-size: 11px;
+            font-size: 10.5px;
             text-transform: uppercase;
             font-weight: 800;
         }
@@ -105,31 +105,31 @@
             vertical-align: top;
         }
         .item-name { font-weight: 700; word-break: break-word; color: #000000; }
-        .item-price { font-size: 11px; }
+        .item-price { font-size: 10.5px; }
         .summary-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 3px;
-            font-size: 12px;
+            font-size: 11.5px;
         }
         .total-row {
             display: flex;
             justify-content: space-between;
-            font-size: 15px;
+            font-size: 14.5px;
             font-weight: 900;
             margin: 6px 0;
         }
         .footer-notes {
-            font-size: 11px;
+            font-size: 10.5px;
             margin-top: 8px;
             line-height: 1.3;
         }
         .sub-footer {
-            font-size: 9.5px;
+            font-size: 9px;
             margin-top: 4px;
         }
 
-        /* KHUSUS CETAK & SIMPAN PDF ANDROID: MEMENUHI LEBAR PENUH 100% AGAR DI MODE GAMBAR LANGSUNG PAS DI 58MM */
+        /* KHUSUS CETAK & SIMPAN PDF ANDROID: MARGIN AMAN AGAR TIDAK KEPOTONG DI TEPI KANAN PRINTER THERMAL */
         @media print {
             .no-print {
                 display: none !important;
@@ -147,60 +147,60 @@
                 color: #000000 !important;
             }
             .receipt-container {
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-                padding: 2.5vw 3.5vw !important;
+                width: 90% !important;
+                max-width: 90% !important;
+                margin: 0 auto !important;
+                padding: 1.5vw 1.5vw !important;
                 box-shadow: none !important;
                 border-radius: 0 !important;
                 border: none !important;
-                font-size: 4vw !important;
-                line-height: 1.35 !important;
+                font-size: 3.3vw !important;
+                line-height: 1.32 !important;
             }
             .store-title {
-                font-size: 5vw !important;
+                font-size: 4.4vw !important;
             }
             .store-subtitle {
-                font-size: 3.3vw !important;
+                font-size: 2.8vw !important;
             }
             .meta-section {
-                font-size: 3.6vw !important;
+                font-size: 3vw !important;
             }
             .dashed-line {
                 border-top: 1px dashed #000000 !important;
-                margin: 2vw 0 !important;
+                margin: 1.5vw 0 !important;
             }
             .double-line {
                 border-top: 2px dashed #000000 !important;
-                margin: 2vw 0 !important;
-            }
-            .table-items {
-                font-size: 3.8vw !important;
-            }
-            .table-items th {
-                font-size: 3.4vw !important;
-                padding: 1vw 0 !important;
-            }
-            .table-items td {
-                padding: 1vw 0 !important;
-            }
-            .item-price {
-                font-size: 3.4vw !important;
-            }
-            .summary-row {
-                font-size: 3.8vw !important;
-                margin-bottom: 0.8vw !important;
-            }
-            .total-row {
-                font-size: 5vw !important;
                 margin: 1.5vw 0 !important;
             }
+            .table-items {
+                font-size: 3.1vw !important;
+            }
+            .table-items th {
+                font-size: 2.8vw !important;
+                padding: 0.8vw 0 !important;
+            }
+            .table-items td {
+                padding: 0.8vw 0 !important;
+            }
+            .item-price {
+                font-size: 2.7vw !important;
+            }
+            .summary-row {
+                font-size: 3.1vw !important;
+                margin-bottom: 0.7vw !important;
+            }
+            .total-row {
+                font-size: 4.3vw !important;
+                margin: 1.2vw 0 !important;
+            }
             .footer-notes {
-                font-size: 3.4vw !important;
-                margin-top: 2vw !important;
+                font-size: 2.8vw !important;
+                margin-top: 1.5vw !important;
             }
             .sub-footer {
-                font-size: 2.9vw !important;
+                font-size: 2.4vw !important;
             }
             * {
                 color: #000000 !important;
@@ -241,8 +241,8 @@
                 <span>{{ $sale->transaction_date->translatedFormat('d/m/y H:i') }}</span>
             </div>
             <div class="d-flex-between" style="margin-top: 2px;">
-                <span>Kasir: {{ $sale->user->name ?? 'Kasir' }}</span>
-                <span class="fw-bold" style="color: {{ $sale->isCancelled() ? '#dc2626' : '#059669' }};">
+                <span>Kasir: {{ Str::limit($sale->user->name ?? 'Kasir', 14) }}</span>
+                <span class="fw-bold" style="color: {{ $sale->isCancelled() ? '#dc2626' : '#000000' }};">
                     {{ $sale->status }}
                 </span>
             </div>
@@ -260,8 +260,8 @@
             <thead>
                 <tr>
                     <th class="text-start">Item Produk</th>
-                    <th class="text-center" style="width: 18%;">Qty</th>
-                    <th class="text-end" style="width: 32%;">Subtotal</th>
+                    <th class="text-center" style="width: 20%;">Qty</th>
+                    <th class="text-end" style="width: 36%;">Subtotal</th>
                 </tr>
             </thead>
             <tbody>
