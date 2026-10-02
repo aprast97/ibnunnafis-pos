@@ -1,9 +1,47 @@
+@php
+    $receiptText = "================================\n";
+    $receiptText .= "       KANTIN IBNUNNAFIS        \n";
+    $receiptText .= "Pondok Pesantren Ibnunnafis Depok\n";
+    $receiptText .= "================================\n";
+    $receiptText .= "No   : " . $sale->transaction_number . "\n";
+    $receiptText .= "Tgl  : " . $sale->transaction_date->translatedFormat('d/m/Y H:i') . "\n";
+    $receiptText .= "Kasir: " . ($sale->user->name ?? 'Kasir') . "\n";
+    $receiptText .= "Status: " . $sale->status . "\n";
+    if ($sale->isCancelled()) {
+        $receiptText .= "DIBATALKAN: " . $sale->cancellation_reason . "\n";
+    }
+    $receiptText .= "--------------------------------\n";
+    foreach($sale->items as $item) {
+        $receiptText .= $item->product->name . "\n";
+        $qtyStr = number_format($item->quantity, 0, ',', '.') . ' ' . ($item->unit->symbol ?? 'pcs');
+        $priceStr = '@ Rp ' . number_format($item->unit_price, 0, ',', '.');
+        $subtotalStr = 'Rp ' . number_format($item->subtotal, 0, ',', '.');
+        $left = '  ' . $qtyStr . ' ' . $priceStr;
+        $spaces = max(1, 32 - strlen($left) - strlen($subtotalStr));
+        $receiptText .= $left . str_repeat(' ', $spaces) . $subtotalStr . "\n";
+    }
+    $receiptText .= "================================\n";
+    $totLabel = "TOTAL";
+    $totVal = "Rp " . number_format($sale->total_amount, 0, ',', '.');
+    $receiptText .= $totLabel . str_repeat(' ', max(1, 32 - strlen($totLabel) - strlen($totVal))) . $totVal . "\n";
+    $payLabel = "Tunai";
+    $payVal = "Rp " . number_format($sale->payment_amount, 0, ',', '.');
+    $receiptText .= $payLabel . str_repeat(' ', max(1, 32 - strlen($payLabel) - strlen($payVal))) . $payVal . "\n";
+    $chgLabel = "Kembalian";
+    $chgVal = "Rp " . number_format($sale->change_amount, 0, ',', '.');
+    $receiptText .= $chgLabel . str_repeat(' ', max(1, 32 - strlen($chgLabel) - strlen($chgVal))) . $chgVal . "\n";
+    $receiptText .= "================================\n";
+    $receiptText .= "      *** TERIMA KASIH ***      \n";
+    $receiptText .= "   Semoga Berkah & Bermanfaat   \n";
+    $receiptText .= "================================\n";
+@endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Struk #{{ $sale->transaction_number }} — Kantin Ibnunnafis</title>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         @page {
             size: 58mm auto;
@@ -23,21 +61,24 @@
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
-        .action-bar {
-            max-width: 270px;
+        .action-container {
+            max-width: 290px;
             margin: 0 auto 12px auto;
             display: flex;
+            flex-direction: column;
             gap: 8px;
-            align-items: center;
-            justify-content: center;
+        }
+        .action-row {
+            display: flex;
+            gap: 8px;
         }
         .btn-action {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            padding: 8px 14px;
-            font-size: 13px;
+            padding: 8px 12px;
+            font-size: 12px;
             font-weight: 700;
             border-radius: 8px;
             cursor: pointer;
@@ -54,24 +95,40 @@
         .btn-print:hover {
             background: #047857;
         }
+        .btn-copy {
+            background: #3b82f6;
+            color: #ffffff;
+            flex: 1;
+        }
+        .btn-copy:hover {
+            background: #2563eb;
+        }
+        .btn-img {
+            background: #475569;
+            color: #ffffff;
+            flex: 1;
+        }
+        .btn-img:hover {
+            background: #334155;
+        }
         .btn-close-win {
             background: #e2e8f0;
             color: #475569;
+            padding: 8px 12px;
         }
         .btn-close-win:hover {
             background: #cbd5e1;
         }
-        .hint-bar {
-            max-width: 270px;
+        .hint-card {
+            max-width: 290px;
             margin: 0 auto 12px auto;
-            background: #fef3c7;
-            border: 1px solid #fde68a;
-            border-radius: 6px;
-            padding: 6px 10px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 8px 10px;
             font-size: 11px;
-            color: #92400e;
-            text-align: center;
-            line-height: 1.3;
+            color: #1e40af;
+            line-height: 1.35;
         }
         .receipt-container {
             margin: 0 auto;
@@ -189,21 +246,39 @@
 </head>
 <body>
 
-    <div class="action-bar no-print">
-        <button type="button" class="btn-action btn-print" onclick="window.print()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-            Cetak Struk (58mm)
-        </button>
-        <button type="button" class="btn-action btn-close-win" onclick="window.close()">
-            Tutup
-        </button>
+    <textarea id="raw-receipt-text" style="display: none;">{{ $receiptText }}</textarea>
+
+    <div class="action-container no-print">
+        <div class="action-row">
+            <button type="button" class="btn-action btn-print" onclick="window.print()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                Cetak Browser
+            </button>
+            <button type="button" class="btn-action btn-close-win" onclick="window.close()">
+                Tutup
+            </button>
+        </div>
+        <div class="action-row">
+            <button type="button" class="btn-action btn-copy" id="btn-copy-text" onclick="copyReceiptText()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                Salin Teks Struk
+            </button>
+            <button type="button" class="btn-action btn-img" id="btn-download-img" onclick="downloadReceiptImage()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                Simpan PNG
+            </button>
+        </div>
     </div>
 
-    <div class="hint-bar no-print">
-        💡 <strong>Kertas 58mm:</strong> Pada dialog print browser, pilih <em>Margins: None</em> dan pastikan <em>Paper size: 58mm</em> (atau <em>Roll Paper</em>).
+    <div class="hint-card no-print">
+        📱 <strong>Tips Cetak di Tablet Android:</strong>
+        <div style="margin-top: 4px;">
+            • <strong>Opsi A (Teks Rapi):</strong> Klik <em>"Salin Teks Struk"</em> di atas, lalu tempel (paste) ke aplikasi printer Bluetooth. Teks akan 100% pas dan tidak ada typo OCR!<br>
+            • <strong>Opsi B (Gambar):</strong> Klik <em>"Simpan PNG"</em>, buka di aplikasi printer lalu cetak mode <em>Gambar</em> tanpa perlu crop lagi.
+        </div>
     </div>
 
-    <div class="receipt-container">
+    <div class="receipt-container" id="receipt-card">
         <!-- HEADER TOKO -->
         <div class="text-center">
             <h2 class="store-title">KANTIN IBNUNNAFIS</h2>
@@ -292,9 +367,72 @@
     </div>
 
     <script>
+        function copyReceiptText() {
+            const rawText = document.getElementById('raw-receipt-text').value;
+            const btn = document.getElementById('btn-copy-text');
+            const orig = btn.innerHTML;
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(rawText).then(() => {
+                    btn.innerHTML = '✅ Teks Disalin!';
+                    setTimeout(() => { btn.innerHTML = orig; }, 2500);
+                }).catch(() => {
+                    fallbackCopy(rawText, btn, orig);
+                });
+            } else {
+                fallbackCopy(rawText, btn, orig);
+            }
+        }
+
+        function fallbackCopy(text, btn, orig) {
+            const ta = document.getElementById('raw-receipt-text');
+            ta.style.display = 'block';
+            ta.select();
+            try {
+                document.execCommand('copy');
+                btn.innerHTML = '✅ Teks Disalin!';
+                setTimeout(() => { btn.innerHTML = orig; }, 2500);
+            } catch (err) {
+                alert('Silakan salin teks secara manual.');
+            }
+            ta.style.display = 'none';
+        }
+
+        function downloadReceiptImage() {
+            const el = document.getElementById('receipt-card');
+            const btn = document.getElementById('btn-download-img');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '⏳ Menyiapkan...';
+
+            if (typeof html2canvas === 'undefined') {
+                alert('Library canvas sedang dimuat, coba sesaat lagi.');
+                btn.innerHTML = orig;
+                return;
+            }
+
+            html2canvas(el, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Struk_{{ $sale->transaction_number }}.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                btn.innerHTML = '✅ PNG Tersimpan!';
+                setTimeout(() => { btn.innerHTML = orig; }, 2500);
+            }).catch(err => {
+                console.error(err);
+                btn.innerHTML = orig;
+                alert('Gagal membuat gambar struk.');
+            });
+        }
+
         window.addEventListener('load', function() {
             const urlParams = new URLSearchParams(window.location.search);
-            if (!urlParams.has('noprint')) {
+            // Jangan auto-print jika di dalam iframe atau jika di perangkat Android
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            if (!urlParams.has('noprint') && !isAndroid) {
                 setTimeout(function() {
                     window.print();
                 }, 350);
