@@ -527,13 +527,23 @@ function processCheckout() {
 
 function loadReceiptModal(receiptUrl) {
     const frame = document.getElementById('pos-receipt-frame');
-    frame.src = receiptUrl;
+    frame.src = receiptUrl + (receiptUrl.includes('?') ? '&' : '?') + 'noprint=1';
 
     const modal = new bootstrap.Modal(document.getElementById('receiptModal'));
     modal.show();
 }
 
 function printReceiptFromModal() {
+    const frame = document.getElementById('pos-receipt-frame');
+    if (frame && frame.contentWindow) {
+        try {
+            frame.contentWindow.focus();
+            frame.contentWindow.print();
+            return;
+        } catch (e) {
+            console.warn('Iframe print fallback triggered', e);
+        }
+    }
     if (!currentReceiptUrl) return;
     const printWindow = window.open(currentReceiptUrl, '_blank', 'width=420,height=600');
     if (printWindow) {
