@@ -32,8 +32,8 @@
   body:has(#posReceiptModal:not(.hidden)) .modal-container {
     box-shadow: none !important;
     border: none !important;
-    width: 80mm !important;
-    max-width: 80mm !important;
+    width: 58mm !important;
+    max-width: 58mm !important;
     margin: 0 auto !important;
   }
 
@@ -47,8 +47,8 @@
   body:has(#transactionDetailModal:not(.hidden)) .modal-container {
     box-shadow: none !important;
     border: none !important;
-    width: 80mm !important;
-    max-width: 80mm !important;
+    width: 58mm !important;
+    max-width: 58mm !important;
     margin: 0 auto !important;
   }
 
