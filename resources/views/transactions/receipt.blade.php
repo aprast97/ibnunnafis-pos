@@ -15,7 +15,7 @@
             padding: 0;
         }
         body {
-            font-family: 'Courier New', Courier, monospace, sans-serif;
+            font-family: 'Arial', 'Segoe UI', -apple-system, Roboto, sans-serif;
             background: #f1f5f9;
             color: #000000;
             padding: 16px 8px;
@@ -23,7 +23,7 @@
             print-color-adjust: exact;
         }
         .action-bar {
-            max-width: 280px;
+            max-width: 290px;
             margin: 0 auto 12px auto;
             display: flex;
             gap: 8px;
@@ -63,11 +63,11 @@
             margin: 0 auto;
             background: #ffffff;
             width: 100%;
-            max-width: 270px;
-            padding: 14px 10px;
+            max-width: 290px;
+            padding: 16px 14px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 13px;
             line-height: 1.35;
             color: #000000;
         }
@@ -75,13 +75,13 @@
         .text-end { text-align: right; }
         .text-start { text-align: left; }
         .fw-bold { font-weight: bold; }
-        .font-mono { font-family: 'Courier New', Courier, monospace; }
+        .font-mono { font-family: 'Arial', sans-serif; font-weight: 700; }
         .d-flex-between { display: flex; justify-content: space-between; gap: 4px; }
-        .store-title { font-size: 14.5px; font-weight: 900; letter-spacing: 0.5px; }
-        .store-subtitle { font-size: 10px; margin-top: 2px; }
-        .meta-section { font-size: 10.5px; margin-top: 4px; font-weight: 600; }
+        .store-title { font-size: 16px; font-weight: 900; letter-spacing: 0.5px; }
+        .store-subtitle { font-size: 11px; margin-top: 2px; font-weight: 600; }
+        .meta-section { font-size: 11.5px; margin-top: 4px; font-weight: 600; }
         .dashed-line {
-            border-top: 1px dashed #000000;
+            border-top: 1.5px dashed #000000;
             margin: 6px 0;
         }
         .double-line {
@@ -91,45 +91,48 @@
         .table-items {
             width: 100%;
             border-collapse: collapse;
-            font-size: 11px;
+            font-size: 12px;
         }
         .table-items th {
             padding: 4px 0;
-            border-bottom: 1px dashed #000000;
-            font-size: 10px;
+            border-bottom: 1.5px dashed #000000;
+            font-size: 11px;
             text-transform: uppercase;
-            font-weight: 800;
+            font-weight: 900;
         }
         .table-items td {
             padding: 4px 0;
             vertical-align: top;
         }
-        .item-name { font-weight: 700; word-break: break-word; color: #000000; }
-        .item-price { font-size: 10px; }
+        .item-name { font-weight: 800; word-break: break-word; color: #000000; }
+        .item-price { font-size: 10.5px; font-weight: 600; }
         .summary-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 3px;
-            font-size: 11px;
+            font-size: 12px;
+            font-weight: 700;
         }
         .total-row {
             display: flex;
             justify-content: space-between;
-            font-size: 13.5px;
+            font-size: 15px;
             font-weight: 900;
-            margin: 5px 0;
+            margin: 6px 0;
         }
         .footer-notes {
-            font-size: 10px;
-            margin-top: 7px;
+            font-size: 11px;
+            margin-top: 8px;
             line-height: 1.3;
+            font-weight: 700;
         }
         .sub-footer {
-            font-size: 8.5px;
+            font-size: 9.5px;
             margin-top: 4px;
+            font-weight: 600;
         }
 
-        /* KHUSUS CETAK & SIMPAN PDF ANDROID: LEBAR 75% AGAR BERADA TEPAT DI TENGAH HEAD PEMANAS 48MM TANPA TERPOTONG */
+        /* KHUSUS CETAK & SIMPAN PDF ANDROID: FONT SANS-SERIF TEBAL, LEBIH BESAR & JELAS */
         @media print {
             .no-print {
                 display: none !important;
@@ -145,66 +148,80 @@
                 padding: 0 !important;
                 margin: 0 !important;
                 color: #000000 !important;
+                font-family: 'Arial', 'Segoe UI', -apple-system, Roboto, sans-serif !important;
             }
             .receipt-container {
-                width: 75% !important;
-                max-width: 75% !important;
+                width: 82% !important;
+                max-width: 82% !important;
                 margin: 0 auto !important;
                 padding: 1.5vw 1vw !important;
                 box-shadow: none !important;
                 border-radius: 0 !important;
                 border: none !important;
-                font-size: 2.8vw !important;
-                line-height: 1.32 !important;
+                font-size: 3.4vw !important;
+                line-height: 1.34 !important;
             }
             .store-title {
-                font-size: 3.8vw !important;
+                font-size: 4.6vw !important;
+                font-weight: 900 !important;
             }
             .store-subtitle {
-                font-size: 2.4vw !important;
+                font-size: 3.0vw !important;
+                font-weight: 700 !important;
             }
             .meta-section {
-                font-size: 2.6vw !important;
+                font-size: 3.2vw !important;
+                font-weight: 700 !important;
             }
             .dashed-line {
-                border-top: 1px dashed #000000 !important;
-                margin: 1.2vw 0 !important;
+                border-top: 1.5px dashed #000000 !important;
+                margin: 1.4vw 0 !important;
             }
             .double-line {
-                border-top: 2px dashed #000000 !important;
-                margin: 1.2vw 0 !important;
+                border-top: 2.5px dashed #000000 !important;
+                margin: 1.4vw 0 !important;
             }
             .table-items {
-                font-size: 2.7vw !important;
+                font-size: 3.4vw !important;
             }
             .table-items th {
-                font-size: 2.5vw !important;
-                padding: 0.6vw 0 !important;
+                font-size: 3.1vw !important;
+                padding: 0.8vw 0 !important;
+                font-weight: 900 !important;
             }
             .table-items td {
-                padding: 0.6vw 0 !important;
+                padding: 0.8vw 0 !important;
+            }
+            .item-name {
+                font-size: 3.5vw !important;
+                font-weight: 900 !important;
             }
             .item-price {
-                font-size: 2.3vw !important;
+                font-size: 2.9vw !important;
+                font-weight: 700 !important;
             }
             .summary-row {
-                font-size: 2.7vw !important;
-                margin-bottom: 0.6vw !important;
+                font-size: 3.4vw !important;
+                margin-bottom: 0.8vw !important;
+                font-weight: 800 !important;
             }
             .total-row {
-                font-size: 3.8vw !important;
-                margin: 1vw 0 !important;
+                font-size: 4.6vw !important;
+                margin: 1.2vw 0 !important;
+                font-weight: 900 !important;
             }
             .footer-notes {
-                font-size: 2.5vw !important;
-                margin-top: 1.2vw !important;
+                font-size: 3.0vw !important;
+                margin-top: 1.4vw !important;
+                font-weight: 700 !important;
             }
             .sub-footer {
-                font-size: 2.1vw !important;
+                font-size: 2.7vw !important;
+                font-weight: 600 !important;
             }
             * {
                 color: #000000 !important;
-                font-weight: 700 !important;
+                font-weight: 800 !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
