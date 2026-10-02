@@ -23,7 +23,7 @@
             print-color-adjust: exact;
         }
         .action-bar {
-            max-width: 300px;
+            max-width: 280px;
             margin: 0 auto 12px auto;
             display: flex;
             gap: 8px;
@@ -63,11 +63,11 @@
             margin: 0 auto;
             background: #ffffff;
             width: 100%;
-            max-width: 290px;
-            padding: 14px 12px;
+            max-width: 270px;
+            padding: 14px 10px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
             border-radius: 6px;
-            font-size: 12.5px;
+            font-size: 12px;
             line-height: 1.35;
             color: #000000;
         }
@@ -77,9 +77,9 @@
         .fw-bold { font-weight: bold; }
         .font-mono { font-family: 'Courier New', Courier, monospace; }
         .d-flex-between { display: flex; justify-content: space-between; gap: 4px; }
-        .store-title { font-size: 15px; font-weight: 900; letter-spacing: 0.5px; }
-        .store-subtitle { font-size: 10.5px; margin-top: 2px; }
-        .meta-section { font-size: 11px; margin-top: 4px; font-weight: 600; }
+        .store-title { font-size: 14.5px; font-weight: 900; letter-spacing: 0.5px; }
+        .store-subtitle { font-size: 10px; margin-top: 2px; }
+        .meta-section { font-size: 10.5px; margin-top: 4px; font-weight: 600; }
         .dashed-line {
             border-top: 1px dashed #000000;
             margin: 6px 0;
@@ -91,12 +91,12 @@
         .table-items {
             width: 100%;
             border-collapse: collapse;
-            font-size: 11.5px;
+            font-size: 11px;
         }
         .table-items th {
             padding: 4px 0;
             border-bottom: 1px dashed #000000;
-            font-size: 10.5px;
+            font-size: 10px;
             text-transform: uppercase;
             font-weight: 800;
         }
@@ -105,31 +105,31 @@
             vertical-align: top;
         }
         .item-name { font-weight: 700; word-break: break-word; color: #000000; }
-        .item-price { font-size: 10.5px; }
+        .item-price { font-size: 10px; }
         .summary-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 3px;
-            font-size: 11.5px;
+            font-size: 11px;
         }
         .total-row {
             display: flex;
             justify-content: space-between;
-            font-size: 14.5px;
+            font-size: 13.5px;
             font-weight: 900;
-            margin: 6px 0;
+            margin: 5px 0;
         }
         .footer-notes {
-            font-size: 10.5px;
-            margin-top: 8px;
+            font-size: 10px;
+            margin-top: 7px;
             line-height: 1.3;
         }
         .sub-footer {
-            font-size: 9px;
+            font-size: 8.5px;
             margin-top: 4px;
         }
 
-        /* KHUSUS CETAK & SIMPAN PDF ANDROID: MARGIN AMAN AGAR TIDAK KEPOTONG DI TEPI KANAN PRINTER THERMAL */
+        /* KHUSUS CETAK & SIMPAN PDF ANDROID: LEBAR 75% AGAR BERADA TEPAT DI TENGAH HEAD PEMANAS 48MM TANPA TERPOTONG */
         @media print {
             .no-print {
                 display: none !important;
@@ -147,60 +147,60 @@
                 color: #000000 !important;
             }
             .receipt-container {
-                width: 90% !important;
-                max-width: 90% !important;
+                width: 75% !important;
+                max-width: 75% !important;
                 margin: 0 auto !important;
-                padding: 1.5vw 1.5vw !important;
+                padding: 1.5vw 1vw !important;
                 box-shadow: none !important;
                 border-radius: 0 !important;
                 border: none !important;
-                font-size: 3.3vw !important;
+                font-size: 2.8vw !important;
                 line-height: 1.32 !important;
             }
             .store-title {
-                font-size: 4.4vw !important;
+                font-size: 3.8vw !important;
             }
             .store-subtitle {
-                font-size: 2.8vw !important;
+                font-size: 2.4vw !important;
             }
             .meta-section {
-                font-size: 3vw !important;
+                font-size: 2.6vw !important;
             }
             .dashed-line {
                 border-top: 1px dashed #000000 !important;
-                margin: 1.5vw 0 !important;
+                margin: 1.2vw 0 !important;
             }
             .double-line {
                 border-top: 2px dashed #000000 !important;
-                margin: 1.5vw 0 !important;
-            }
-            .table-items {
-                font-size: 3.1vw !important;
-            }
-            .table-items th {
-                font-size: 2.8vw !important;
-                padding: 0.8vw 0 !important;
-            }
-            .table-items td {
-                padding: 0.8vw 0 !important;
-            }
-            .item-price {
-                font-size: 2.7vw !important;
-            }
-            .summary-row {
-                font-size: 3.1vw !important;
-                margin-bottom: 0.7vw !important;
-            }
-            .total-row {
-                font-size: 4.3vw !important;
                 margin: 1.2vw 0 !important;
             }
+            .table-items {
+                font-size: 2.7vw !important;
+            }
+            .table-items th {
+                font-size: 2.5vw !important;
+                padding: 0.6vw 0 !important;
+            }
+            .table-items td {
+                padding: 0.6vw 0 !important;
+            }
+            .item-price {
+                font-size: 2.3vw !important;
+            }
+            .summary-row {
+                font-size: 2.7vw !important;
+                margin-bottom: 0.6vw !important;
+            }
+            .total-row {
+                font-size: 3.8vw !important;
+                margin: 1vw 0 !important;
+            }
             .footer-notes {
-                font-size: 2.8vw !important;
-                margin-top: 1.5vw !important;
+                font-size: 2.5vw !important;
+                margin-top: 1.2vw !important;
             }
             .sub-footer {
-                font-size: 2.4vw !important;
+                font-size: 2.1vw !important;
             }
             * {
                 color: #000000 !important;
@@ -241,7 +241,7 @@
                 <span>{{ $sale->transaction_date->translatedFormat('d/m/y H:i') }}</span>
             </div>
             <div class="d-flex-between" style="margin-top: 2px;">
-                <span>Kasir: {{ Str::limit($sale->user->name ?? 'Kasir', 14) }}</span>
+                <span>Kasir: {{ Str::limit($sale->user->name ?? 'Kasir', 12) }}</span>
                 <span class="fw-bold" style="color: {{ $sale->isCancelled() ? '#dc2626' : '#000000' }};">
                     {{ $sale->status }}
                 </span>
@@ -259,8 +259,8 @@
         <table class="table-items">
             <thead>
                 <tr>
-                    <th class="text-start">Item Produk</th>
-                    <th class="text-center" style="width: 20%;">Qty</th>
+                    <th class="text-start" style="width: 46%;">Item Produk</th>
+                    <th class="text-center" style="width: 18%;">Qty</th>
                     <th class="text-end" style="width: 36%;">Subtotal</th>
                 </tr>
             </thead>
@@ -274,7 +274,7 @@
                     <td class="text-center font-mono">
                         {{ number_format($item->quantity, 0, ',', '.') }} {{ $item->unit->symbol ?? '' }}
                     </td>
-                    <td class="text-end font-mono">
+                    <td class="text-end font-mono" style="white-space: nowrap;">
                         Rp {{ number_format($item->subtotal, 0, ',', '.') }}
                     </td>
                 </tr>
