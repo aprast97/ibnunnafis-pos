@@ -74,12 +74,12 @@
         .text-center { text-align: center; }
         .text-end { text-align: right; }
         .text-start { text-align: left; }
-        .fw-bold { font-weight: bold; }
-        .font-mono { font-family: 'Arial', sans-serif; font-weight: 700; }
+        .fw-bold { font-weight: 900; }
+        .font-mono { font-family: 'Arial', sans-serif; font-weight: 800; }
         .d-flex-between { display: flex; justify-content: space-between; gap: 4px; }
         .store-title { font-size: 16px; font-weight: 900; letter-spacing: 0.5px; }
-        .store-subtitle { font-size: 11px; margin-top: 2px; font-weight: 600; }
-        .meta-section { font-size: 11.5px; margin-top: 4px; font-weight: 600; }
+        .store-subtitle { font-size: 11.5px; margin-top: 2px; font-weight: 700; }
+        .meta-section { font-size: 12px; margin-top: 4px; font-weight: 700; }
         .dashed-line {
             border-top: 1.5px dashed #000000;
             margin: 6px 0;
@@ -96,7 +96,7 @@
         .table-items th {
             padding: 4px 0;
             border-bottom: 1.5px dashed #000000;
-            font-size: 11px;
+            font-size: 11.5px;
             text-transform: uppercase;
             font-weight: 900;
         }
@@ -104,14 +104,14 @@
             padding: 4px 0;
             vertical-align: top;
         }
-        .item-name { font-weight: 800; word-break: break-word; color: #000000; }
-        .item-price { font-size: 10.5px; font-weight: 600; }
+        .item-name { font-weight: 900; word-break: break-word; color: #000000; }
+        .item-price { font-size: 11px; font-weight: 700; }
         .summary-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 3px;
-            font-size: 12px;
-            font-weight: 700;
+            font-size: 12.5px;
+            font-weight: 800;
         }
         .total-row {
             display: flex;
@@ -121,18 +121,18 @@
             margin: 6px 0;
         }
         .footer-notes {
-            font-size: 11px;
+            font-size: 11.5px;
             margin-top: 8px;
             line-height: 1.3;
-            font-weight: 700;
+            font-weight: 800;
         }
         .sub-footer {
-            font-size: 9.5px;
+            font-size: 10px;
             margin-top: 4px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
-        /* KHUSUS CETAK & SIMPAN PDF ANDROID: FONT SANS-SERIF TEBAL, LEBIH BESAR & JELAS */
+        /* KHUSUS CETAK & SIMPAN PDF ANDROID: SEMUA TEKS HITAM PEKAT MERATA, BOLD 800-900, DAN TEGAS */
         @media print {
             .no-print {
                 display: none !important;
@@ -158,34 +158,35 @@
                 box-shadow: none !important;
                 border-radius: 0 !important;
                 border: none !important;
-                font-size: 3.4vw !important;
+                font-size: 3.5vw !important;
                 line-height: 1.34 !important;
             }
             .store-title {
-                font-size: 4.6vw !important;
+                font-size: 4.8vw !important;
                 font-weight: 900 !important;
+                letter-spacing: 0.3px !important;
             }
             .store-subtitle {
-                font-size: 3.0vw !important;
-                font-weight: 700 !important;
+                font-size: 3.3vw !important;
+                font-weight: 800 !important;
             }
             .meta-section {
-                font-size: 3.2vw !important;
-                font-weight: 700 !important;
+                font-size: 3.4vw !important;
+                font-weight: 800 !important;
             }
             .dashed-line {
-                border-top: 1.5px dashed #000000 !important;
+                border-top: 1.8px dashed #000000 !important;
                 margin: 1.4vw 0 !important;
             }
             .double-line {
-                border-top: 2.5px dashed #000000 !important;
+                border-top: 2.8px dashed #000000 !important;
                 margin: 1.4vw 0 !important;
             }
             .table-items {
                 font-size: 3.4vw !important;
             }
             .table-items th {
-                font-size: 3.1vw !important;
+                font-size: 3.2vw !important;
                 padding: 0.8vw 0 !important;
                 font-weight: 900 !important;
             }
@@ -193,35 +194,36 @@
                 padding: 0.8vw 0 !important;
             }
             .item-name {
-                font-size: 3.5vw !important;
+                font-size: 3.6vw !important;
                 font-weight: 900 !important;
             }
             .item-price {
-                font-size: 2.9vw !important;
-                font-weight: 700 !important;
-            }
-            .summary-row {
-                font-size: 3.4vw !important;
-                margin-bottom: 0.8vw !important;
+                font-size: 3.1vw !important;
                 font-weight: 800 !important;
             }
+            .summary-row {
+                font-size: 3.5vw !important;
+                margin-bottom: 0.8vw !important;
+                font-weight: 900 !important;
+            }
             .total-row {
-                font-size: 4.6vw !important;
+                font-size: 4.8vw !important;
                 margin: 1.2vw 0 !important;
                 font-weight: 900 !important;
             }
             .footer-notes {
-                font-size: 3.0vw !important;
+                font-size: 3.3vw !important;
                 margin-top: 1.4vw !important;
-                font-weight: 700 !important;
+                font-weight: 800 !important;
             }
             .sub-footer {
-                font-size: 2.7vw !important;
-                font-weight: 600 !important;
+                font-size: 2.9vw !important;
+                font-weight: 700 !important;
             }
             * {
                 color: #000000 !important;
                 font-weight: 800 !important;
+                -webkit-text-stroke: 0.25px #000000 !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
