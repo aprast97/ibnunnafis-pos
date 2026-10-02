@@ -251,11 +251,8 @@
             <div class="modal-body p-3" id="receipt-preview-body">
                 <iframe id="receipt-preview-frame" title="Preview Struk Transaksi" loading="lazy"></iframe>
             </div>
-            <div class="modal-footer border-0 pt-0 px-3 pb-3 d-flex gap-2">
-                <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary btn-sm flex-fill d-flex align-items-center justify-content-center gap-1" onclick="printReceiptFromPreviewModal()">
-                    <iconify-icon icon="lucide:printer" class="fs-6"></iconify-icon> Cetak Struk
-                </button>
+            <div class="modal-footer border-0 pt-0 px-3 pb-3">
+                <button type="button" class="btn btn-secondary btn-sm w-100" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
@@ -294,31 +291,12 @@
 
 @push('scripts')
 <script>
-let currentPreviewReceiptUrl = '';
-
 function viewReceiptModal(url) {
-    currentPreviewReceiptUrl = url;
     const frame = document.getElementById('receipt-preview-frame');
-    frame.src = url + (url.includes('?') ? '&' : '?') + 'noprint=1';
+    frame.src = url;
 
     const modal = new bootstrap.Modal(document.getElementById('receiptPreviewModal'));
     modal.show();
-}
-
-function printReceiptFromPreviewModal() {
-    const frame = document.getElementById('receipt-preview-frame');
-    if (frame && frame.contentWindow) {
-        try {
-            frame.contentWindow.focus();
-            frame.contentWindow.print();
-            return;
-        } catch (e) {
-            console.warn('Frame print fallback triggered', e);
-        }
-    }
-    if (currentPreviewReceiptUrl) {
-        window.open(currentPreviewReceiptUrl, '_blank');
-    }
 }
 
 function openCancelModal(id, txNumber) {

@@ -527,7 +527,7 @@ function processCheckout() {
 
 function loadReceiptModal(receiptUrl) {
     const frame = document.getElementById('pos-receipt-frame');
-    frame.src = receiptUrl + (receiptUrl.includes('?') ? '&' : '?') + 'noprint=1';
+    frame.src = receiptUrl;
 
     const modal = new bootstrap.Modal(document.getElementById('receiptModal'));
     modal.show();
@@ -535,19 +535,17 @@ function loadReceiptModal(receiptUrl) {
 
 function printReceiptFromModal() {
     const frame = document.getElementById('pos-receipt-frame');
-    if (frame && frame.contentWindow) {
-        try {
-            frame.contentWindow.focus();
-            frame.contentWindow.print();
-            return;
-        } catch (e) {
-            console.warn('Iframe print fallback triggered', e);
-        }
-    }
-    if (!currentReceiptUrl) return;
-    const printWindow = window.open(currentReceiptUrl, '_blank', 'width=420,height=600');
-    if (printWindow) {
-        printWindow.focus();
+    if (!frame || !frame.src) return;
+
+    const printFrame = () => {
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+    };
+
+    if (frame.contentDocument?.readyState === 'complete') {
+        printFrame();
+    } else {
+        frame.addEventListener('load', printFrame, { once: true });
     }
 }
 
