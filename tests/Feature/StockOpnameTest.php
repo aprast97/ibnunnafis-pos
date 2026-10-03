@@ -32,7 +32,6 @@ class StockOpnameTest extends TestCase
             'role_id'  => $kasirRole->id,
             'name'     => 'Kasir Test',
             'username' => '11111',
-            'email'    => 'kasir@test.com',
             'password' => bcrypt('password'),
         ]);
 
@@ -40,7 +39,6 @@ class StockOpnameTest extends TestCase
             'role_id'  => $adminRole->id,
             'name'     => 'Admin Test',
             'username' => '22222',
-            'email'    => 'admin@test.com',
             'password' => bcrypt('password'),
         ]);
 

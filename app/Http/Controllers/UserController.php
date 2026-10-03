@@ -26,8 +26,7 @@ class UserController extends Controller
         if ($search !== '') {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('username', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                  ->orWhere('username', 'like', "%{$search}%");
             });
         }
 
@@ -63,21 +62,18 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'username' => ['required', 'numeric', 'digits:5', 'unique:users,username'],
-            'email' => ['required', 'email', 'max:150', 'unique:users,email'],
             'role_id' => ['required', 'exists:roles,id'],
             'password' => ['required', 'string', 'min:5'],
         ], [
             'username.digits' => 'ID Pengguna / Username harus berupa 5 digit angka (contoh: 52194).',
             'username.numeric' => 'ID Pengguna harus berupa angka.',
             'username.unique' => 'ID Pengguna / Username ini sudah terdaftar.',
-            'email.unique' => 'Alamat email ini sudah terdaftar.',
             'password.min' => 'Kata sandi minimal 5 karakter.',
         ]);
 
         User::create([
             'name' => $validated['name'],
             'username' => $validated['username'],
-            'email' => $validated['email'],
             'role_id' => $validated['role_id'],
             'password' => Hash::make($validated['password']),
         ]);
@@ -93,14 +89,12 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'username' => ['required', 'numeric', 'digits:5', Rule::unique('users', 'username')->ignore($user->id)],
-            'email' => ['required', 'email', 'max:150', Rule::unique('users', 'email')->ignore($user->id)],
             'role_id' => ['required', 'exists:roles,id'],
             'password' => ['nullable', 'string', 'min:5'],
         ], [
             'username.digits' => 'ID Pengguna / Username harus berupa 5 digit angka (contoh: 52194).',
             'username.numeric' => 'ID Pengguna harus berupa angka.',
             'username.unique' => 'ID Pengguna / Username ini sudah terdaftar.',
-            'email.unique' => 'Alamat email ini sudah terdaftar.',
             'password.min' => 'Kata sandi minimal 5 karakter.',
         ]);
 
@@ -115,7 +109,6 @@ class UserController extends Controller
         $userData = [
             'name' => $validated['name'],
             'username' => $validated['username'],
-            'email' => $validated['email'],
             'role_id' => $validated['role_id'],
         ];
 

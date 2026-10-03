@@ -41,7 +41,6 @@ class UserManagementTest extends TestCase
             'role_id' => $this->adminRole->id,
             'name' => 'Ummi Hj. Romlah',
             'username' => '84921',
-            'email' => 'admin@ibnunnafis.com',
             'password' => Hash::make('84921'),
         ]);
 
@@ -49,7 +48,6 @@ class UserManagementTest extends TestCase
             'role_id' => $this->kasirRole->id,
             'name' => 'Raudhatul Abila',
             'username' => '39147',
-            'email' => 'kasir@ibnunnafis.com',
             'password' => Hash::make('39147'),
         ]);
     }
@@ -86,7 +84,6 @@ class UserManagementTest extends TestCase
         $response = $this->actingAs($this->admin)->post(route('users.store'), [
             'name' => 'Alya Nur Fadhilah',
             'username' => '72583',
-            'email' => 'alya@ibnunnafis.com',
             'role_id' => $this->kasirRole->id,
             'password' => '72583',
         ]);
@@ -97,7 +94,6 @@ class UserManagementTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name' => 'Alya Nur Fadhilah',
             'username' => '72583',
-            'email' => 'alya@ibnunnafis.com',
             'role_id' => $this->kasirRole->id,
         ]);
 
@@ -112,7 +108,6 @@ class UserManagementTest extends TestCase
         $response1 = $this->actingAs($this->admin)->post(route('users.store'), [
             'name' => 'Invalid User 4 Digits',
             'username' => '1234',
-            'email' => 'invalid4@test.com',
             'role_id' => $this->kasirRole->id,
             'password' => '12345',
         ]);
@@ -122,7 +117,6 @@ class UserManagementTest extends TestCase
         $response2 = $this->actingAs($this->admin)->post(route('users.store'), [
             'name' => 'Invalid User 6 Digits',
             'username' => '123456',
-            'email' => 'invalid6@test.com',
             'role_id' => $this->kasirRole->id,
             'password' => '12345',
         ]);
@@ -132,7 +126,6 @@ class UserManagementTest extends TestCase
         $response3 = $this->actingAs($this->admin)->post(route('users.store'), [
             'name' => 'Invalid User Alphabet',
             'username' => 'abcde',
-            'email' => 'invalidabc@test.com',
             'role_id' => $this->kasirRole->id,
             'password' => '12345',
         ]);
@@ -145,7 +138,6 @@ class UserManagementTest extends TestCase
         $response = $this->actingAs($this->admin)->put(route('users.update', $this->kasir), [
             'name' => 'Raudhatul Abila Updated',
             'username' => '39147',
-            'email' => 'kasir.updated@ibnunnafis.com',
             'role_id' => $this->kasirRole->id,
         ]);
 
@@ -155,7 +147,6 @@ class UserManagementTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $this->kasir->id,
             'name' => 'Raudhatul Abila Updated',
-            'email' => 'kasir.updated@ibnunnafis.com',
         ]);
     }
 
@@ -165,7 +156,6 @@ class UserManagementTest extends TestCase
         $response = $this->actingAs($this->admin)->put(route('users.update', $this->kasir), [
             'name' => $this->kasir->name,
             'username' => $this->kasir->username,
-            'email' => $this->kasir->email,
             'role_id' => $this->kasir->role_id,
             'password' => 'newpassword123',
         ]);
@@ -182,7 +172,6 @@ class UserManagementTest extends TestCase
         $response = $this->actingAs($this->admin)->put(route('users.update', $this->admin), [
             'name' => $this->admin->name,
             'username' => $this->admin->username,
-            'email' => $this->admin->email,
             'role_id' => $this->kasirRole->id, // attempt demotion
         ]);
 
@@ -208,7 +197,6 @@ class UserManagementTest extends TestCase
             'role_id' => $this->adminRole->id,
             'name' => 'Second Admin',
             'username' => '99999',
-            'email' => 'second@ibnunnafis.com',
             'password' => Hash::make('99999'),
         ]);
 
@@ -262,7 +250,6 @@ class UserManagementTest extends TestCase
             'role_id' => $this->kasirRole->id,
             'name' => 'Kasir Magang',
             'username' => '55555',
-            'email' => 'magang@ibnunnafis.com',
             'password' => Hash::make('55555'),
         ]);
 

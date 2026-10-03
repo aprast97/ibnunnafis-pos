@@ -78,7 +78,7 @@
                         </select>
 
                         <div class="input-group input-group-sm" style="width: 220px;">
-                            <input type="text" name="search" class="form-control" placeholder="Cari nama, ID, email..." value="{{ $search }}">
+                            <input type="text" name="search" class="form-control" placeholder="Cari nama atau ID..." value="{{ $search }}">
                             <button class="btn btn-outline-secondary" type="submit">
                                 <iconify-icon icon="lucide:search"></iconify-icon>
                             </button>
@@ -105,7 +105,6 @@
                                 <th class="ps-3 ps-md-4 py-3" style="width: 60px;">No</th>
                                 <th class="py-3">Nama &amp; ID Pengguna</th>
                                 <th class="py-3" style="width: 140px;">Hak Akses</th>
-                                <th class="py-3">Alamat Email</th>
                                 <th class="py-3 text-center" style="width: 140px;">Aktivitas Data</th>
                                 <th class="py-3" style="width: 140px;">Terdaftar Sejak</th>
                                 <th class="pe-3 pe-md-4 py-3 text-end" style="width: 120px;">Aksi</th>
@@ -153,9 +152,6 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td>
-                                    <span class="font-mono text-xs text-slate-700">{{ $user->email ?? '—' }}</span>
-                                </td>
                                 <td class="text-center">
                                     <span class="badge {{ $totalActivity > 0 ? 'bg-light text-slate-800 border' : 'bg-light text-muted border' }} font-mono text-xs">
                                         {{ $totalActivity }} log aktivitas
@@ -166,7 +162,7 @@
                                 </td>
                                 <td class="pe-3 pe-md-4 text-end">
                                     <div class="d-inline-flex gap-1">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm p-1 d-inline-flex align-items-center justify-content-center" title="Edit Pengguna" onclick="openEditUserModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ $user->username }}', '{{ addslashes($user->email ?? '') }}', {{ $user->role_id }})">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm p-1 d-inline-flex align-items-center justify-content-center" title="Edit Pengguna" onclick="openEditUserModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ $user->username }}', {{ $user->role_id }})">
                                             <iconify-icon icon="lucide:pencil" class="fs-6"></iconify-icon>
                                         </button>
                                         <button type="button" class="btn btn-outline-danger btn-sm p-1 d-inline-flex align-items-center justify-content-center" title="Hapus Pengguna" onclick="openDeleteUserModal({{ $user->id }}, '{{ addslashes($user->name) }}', {{ $isSelf ? 'true' : 'false' }}, {{ $user->isAdmin() ? 'true' : 'false' }}, {{ $totalActivity }})">
@@ -177,7 +173,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center py-5 text-muted">
+                                <td colspan="6" class="text-center py-5 text-muted">
                                     <div class="d-flex flex-column align-items-center justify-content-center">
                                         <iconify-icon icon="lucide:user-x" class="fs-1 text-slate-300 mb-2"></iconify-icon>
                                         <span class="fw-semibold text-slate-600">Tidak ada pengguna ditemukan</span>
@@ -251,13 +247,6 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="addUserEmail" class="form-label fw-semibold text-xs text-uppercase text-muted">
-                            Alamat Email <span class="text-danger">*</span>
-                        </label>
-                        <input type="email" name="email" id="addUserEmail" class="form-control form-control-simple font-mono" placeholder="nama@ibnunnafis.com" required maxlength="150">
-                    </div>
-
                     <div class="mb-0">
                         <label for="addUserPassword" class="form-label fw-semibold text-xs text-uppercase text-muted">
                             Kata Sandi (PIN Login) <span class="text-danger">*</span>
@@ -325,13 +314,6 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="editUserEmail" class="form-label fw-semibold text-xs text-uppercase text-muted">
-                            Alamat Email <span class="text-danger">*</span>
-                        </label>
-                        <input type="email" name="email" id="editUserEmail" class="form-control form-control-simple font-mono" required maxlength="150">
-                    </div>
-
                     <div class="mb-0">
                         <label for="editUserPassword" class="form-label fw-semibold text-xs text-uppercase text-muted">
                             Kata Sandi Baru (Opsional)
@@ -390,12 +372,11 @@
         }
     }
 
-    function openEditUserModal(id, name, username, email, roleId) {
+    function openEditUserModal(id, name, username, roleId) {
         const form = document.getElementById('editUserForm');
         form.action = `/users/${id}`;
         document.getElementById('editUserName').value = name;
         document.getElementById('editUserUsername').value = username;
-        document.getElementById('editUserEmail').value = email;
         document.getElementById('editUserRoleId').value = roleId;
         document.getElementById('editUserPassword').value = '';
         new bootstrap.Modal(document.getElementById('editUserModal')).show();

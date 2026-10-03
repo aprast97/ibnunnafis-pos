@@ -32,7 +32,6 @@ class ReportTest extends TestCase
             'role_id'  => $kasirRole->id,
             'name'     => 'Kasir Laporan',
             'username' => '11111',
-            'email'    => 'kasir@laporan.com',
             'password' => bcrypt('password'),
         ]);
 
@@ -40,7 +39,6 @@ class ReportTest extends TestCase
             'role_id'  => $adminRole->id,
             'name'     => 'Admin Laporan',
             'username' => '22222',
-            'email'    => 'admin@laporan.com',
             'password' => bcrypt('password'),
         ]);
 

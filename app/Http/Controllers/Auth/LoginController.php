@@ -25,11 +25,8 @@ class LoginController extends Controller
             'password.required' => 'Kata sandi wajib diisi.',
         ]);
 
-        $input = trim($request->username);
-        $fieldType = filter_var($input, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
         $credentials = [
-            $fieldType => $input,
+            'username' => trim($request->username),
             'password' => $request->password,
         ];
 

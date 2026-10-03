@@ -156,7 +156,7 @@
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 0.825rem; min-width: 200px;">
                             <li class="px-3 py-2 border-bottom">
                                 <span class="d-block fw-bold text-xs text-slate-800">{{ auth()->user()->name }}</span>
-                                <span class="text-2xs text-muted font-mono">{{ auth()->user()->email }}</span>
+                                <span class="text-2xs text-muted font-mono">ID: {{ auth()->user()->username }}</span>
                             </li>
                             <li class="p-1">
                                 <button type="button" class="dropdown-item text-danger rounded-2 flex items-center gap-2 py-1.5 px-2.5 text-xs fw-semibold" onclick="confirmLogout()">

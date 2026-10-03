@@ -33,7 +33,6 @@ class DatabaseSeeder extends Seeder
             'role_id' => $adminRole->id,
             'name' => 'Ummi Hj. Romlah Dana Sidiq Lc',
             'username' => '84921',
-            'email' => 'admin@ibnunnafis.com',
             'password' => Hash::make('84921'),
         ]);
 
@@ -41,7 +40,6 @@ class DatabaseSeeder extends Seeder
             'role_id' => $kasirRole->id,
             'name' => 'Raudhatul Abila Sunarya',
             'username' => '39147',
-            'email' => 'kasir1@ibnunnafis.com',
             'password' => Hash::make('39147'),
         ]);
 
@@ -49,7 +47,6 @@ class DatabaseSeeder extends Seeder
             'role_id' => $kasirRole->id,
             'name' => 'Alya Nur Fadhilah',
             'username' => '72583',
-            'email' => 'kasir2@ibnunnafis.com',
             'password' => Hash::make('72583'),
         ]);
 

@@ -30,7 +30,6 @@ class StockMovementTest extends TestCase
             'role_id' => $kasirRole->id,
             'name' => 'Raudhatul Abila',
             'username' => '39147',
-            'email' => 'kasir@ibnunnafis.com',
             'password' => bcrypt('39147'),
         ]);
 
@@ -38,7 +37,6 @@ class StockMovementTest extends TestCase
             'role_id' => $adminRole->id,
             'name' => 'Ummi Hj. Romlah',
             'username' => '84921',
-            'email' => 'admin@ibnunnafis.com',
             'password' => bcrypt('84921'),
         ]);
 

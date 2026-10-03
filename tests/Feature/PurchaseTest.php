@@ -38,7 +38,6 @@ class PurchaseTest extends TestCase
             'role_id' => $kasirRole->id,
             'name' => 'Raudhatul Abila',
             'username' => '39147',
-            'email' => 'kasir@ibnunnafis.com',
             'password' => bcrypt('39147'),
         ]);
 
@@ -46,7 +45,6 @@ class PurchaseTest extends TestCase
             'role_id' => $adminRole->id,
             'name' => 'Ummi Hj. Romlah',
             'username' => '84921',
-            'email' => 'admin@ibnunnafis.com',
             'password' => bcrypt('84921'),
         ]);
 
