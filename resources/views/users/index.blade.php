@@ -243,7 +243,6 @@
                             <select name="role_id" id="addUserRoleId" class="form-select form-select-simple" required>
                                 <option value="{{ $kasirRole->id }}" selected>Kasir</option>
                             </select>
-                            <span class="text-2xs text-muted mt-1 d-block">Admin hanya 1 (akun utama).</span>
                         </div>
                     </div>
 
