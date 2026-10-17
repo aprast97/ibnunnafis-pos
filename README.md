@@ -114,19 +114,48 @@ Sistem Informasi Kasir dan Manajemen Inventaris Berbasis Web untuk **Kantin Ibnu
 
 ---
 
-## Struktur Database & Relasi
+## 🗄 Struktur Database & Relasi (Entity Relationship Diagram)
 
-Aplikasi ini memiliki 17 tabel migrasi utama:
-1. `users` & `roles`: Autentikasi dan hak akses role (`Admin` vs `Kasir`).
-2. `categories` & `units`: Master klasifikasi barang dan satuan acuan.
-3. `suppliers`: Data pemasok / tempat kulakan barang.
-4. `products`: Master produk kantin (kode barcode, nama, harga dasar, stok minimun, foto).
-5. `product_units`: Multi-satuan tiap produk (cth: Satuan Dus isi 24 Pcs dengan harga jual tersendiri).
-6. `purchases` & `purchase_items`: Pencatatan nota belanja / kulakan dari supplier.
-7. `sales` & `sale_items`: Riwayat transaksi penjualan, nominal bayar, kembalian, dan kasir penanggung jawab.
-8. `stock_movements`: Log mutasi keluar-masuk stok barang secara auditabel.
-9. `stock_opnames` & `stock_opname_items`: Berita acara penyesuaian stok fisik periodik.
-10. `sessions`, `cache`, `jobs`: Tabel penunjang performa dan sesi Laravel.
+Sistem ini memiliki **13 tabel entitas bisnis utama** (dan tabel sistem bawaan Laravel seperti `sessions`, `cache`, `jobs`, `password_reset_tokens`).
+
+### Diagram ERD (Mermaid)
+```mermaid
+erDiagram
+    roles ||--o{ users : "has"
+    categories ||--o{ products : "categorizes"
+    units ||--o{ products : "base unit"
+    units ||--o{ product_units : "unit"
+    units ||--o{ purchase_items : "unit"
+    units ||--o{ sale_items : "unit"
+    products ||--o{ product_units : "has"
+    products ||--o{ purchase_items : "purchased in"
+    products ||--o{ sale_items : "sold in"
+    products ||--o{ stock_movements : "tracked in"
+    products ||--o{ stock_opname_items : "adjusted in"
+    suppliers ||--o{ purchases : "supplies"
+    users ||--o{ purchases : "creates"
+    purchases ||--o{ purchase_items : "contains"
+    users ||--o{ sales : "serves"
+    sales ||--o{ sale_items : "contains"
+    users ||--o{ stock_movements : "authorizes"
+    users ||--o{ stock_opnames : "conducts"
+    stock_opnames ||--o{ stock_opname_items : "contains"
+```
+
+### Rincian 13 Tabel Bisnis & Relasinya:
+1. **`roles`**: Master peran pengguna (`id`, `name`, `description`). Berelasi 1-to-many ke `users`.
+2. **`users`**: Akun pengguna sistem (`id`, `role_id`, `name`, `username`, `password`). Berelasi ke `roles`, `sales`, `purchases`, `stock_opnames`, dan `stock_movements`.
+3. **`categories`**: Kategori barang (`id`, `name`, `description`). Berelasi 1-to-many ke `products`.
+4. **`units`**: Satuan dasar barang (`id`, `name`, `symbol`). Berelasi ke `products` (sebagai `base_unit_id`), `product_units`, `purchase_items`, dan `sale_items`.
+5. **`suppliers`**: Pemasok / distributor barang (`id`, `name`, `phone`, `address`). Berelasi 1-to-many ke `purchases`.
+6. **`products`**: Master produk (`id`, `category_id`, `base_unit_id`, `name`, `image_path`, `sku`, `purchase_price`, `selling_price`, `current_stock`, `minimum_stock`, `is_active`).
+7. **`product_units`**: Konversi multi-satuan per produk (`id`, `product_id`, `unit_id`, `conversion_factor`, `selling_price`).
+8. **`purchases`**: Faktur pembelian / kulakan (`id`, `supplier_id`, `user_id`, `receipt_number`, `purchase_date`, `total_amount`, `status`, `notes`).
+9. **`purchase_items`**: Rincian barang masuk dalam nota pembelian (`id`, `purchase_id`, `product_id`, `unit_id`, `quantity`, `conversion_factor`, `quantity_in_base_unit`, `purchase_price`, `subtotal`).
+10. **`sales`**: Transaksi kasir / penjualan (`id`, `user_id`, `transaction_number`, `transaction_date`, `total_amount`, `payment_amount`, `change_amount`, `status`, `canceled_at`, `canceled_by`, `cancellation_reason`).
+11. **`sale_items`**: Rincian item yang dibeli santri (`id`, `sale_id`, `product_id`, `unit_id`, `quantity`, `unit_price`, `subtotal`).
+12. **`stock_movements`**: Kartu audit mutasi stok keluar-masuk (`id`, `product_id`, `user_id`, `type`, `reference_type`, `reference_id`, `quantity`, `stock_before`, `stock_after`, `notes`).
+13. **`stock_opnames` & `stock_opname_items`**: Berita acara audit penyesuaian fisik stok harian/mingguan dan selisihnya (`system_stock`, `physical_stock`, `difference`).
 
 ---
 
