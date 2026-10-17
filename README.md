@@ -50,7 +50,8 @@ Sistem Informasi Kasir dan Manajemen Inventaris Berbasis Web untuk **Kantin Ibnu
 | Komponen | Teknologi | Keterangan |
 | :--- | :--- | :--- |
 | **Backend Framework** | Laravel 11.x | PHP 8.4+ |
-| **Frontend UI** | Blade + Tailwind CSS / Alpine.js | Desain responsif, clean & modern |
+| **Frontend UI** | Blade + Bootstrap 5.3 + Custom CSS | Tampilan clean, responsif, dan ringan |
+| **Interaktivitas & Notifikasi** | Vanilla JS + SweetAlert2 + Iconify | Interaksi kasir real-time tanpa framework JS berat |
 | **Web Server / Runtime** | FrankenPHP (Caddy Server) | High-performance Caddy server dengan worker mode |
 | **Containerization** | Docker | Multi-stage build via `Dockerfile.vercel` |
 | **Database** | MySQL 8.0+ | Managed cloud via Aiven Cloud / Local MySQL |
