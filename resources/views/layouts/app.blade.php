@@ -6,6 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard') — Kantin Ibnunnafis Depok</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('no wat.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('no wat.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('no wat.png') }}">
+
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
