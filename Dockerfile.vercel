@@ -41,3 +41,4 @@ ENV PORT=80 \
 USER www-data
 
 CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]
+

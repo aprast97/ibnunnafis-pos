@@ -6,3 +6,4 @@
         try_files {path} index.php
     }
 }
+
