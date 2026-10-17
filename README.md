@@ -1,12 +1,12 @@
-# 🛒 Kantin Ibnunnafis - Point of Sale (POS) & Inventory System
+# Kantin Ibnunnafis - Point of Sale (POS) & Inventory System
 
 Sistem Informasi Kasir dan Manajemen Inventaris Berbasis Web untuk **Kantin Ibnunnafis Pondok Pesantren**. Aplikasi ini dirancang untuk mempermudah transaksi penjualan harian, pengelolaan stok barang multi-satuan, pencatatan pembelian (kulakan), stock opname, laporan laba rugi, serta pencetakan struk termal.
 
-🌐 **Live URL Production**: [https://kantin-ibnunnafis.vercel.app](https://kantin-ibnunnafis.vercel.app)
+**Live URL Production**: [https://kantin-ibnunnafis.vercel.app](https://kantin-ibnunnafis.vercel.app)
 
 ---
 
-## 📑 Daftar Isi
+## Daftar Isi
 1. [Fitur Utama](#-fitur-utama)
 2. [Arsitektur & Tech Stack](#-arsitektur--tech-stack)
 3. [Akun Pengguna Bawaan (Default Credentials)](#-akun-pengguna-bawaan)
@@ -18,7 +18,7 @@ Sistem Informasi Kasir dan Manajemen Inventaris Berbasis Web untuk **Kantin Ibnu
 
 ---
 
-## ✨ Fitur Utama
+## Fitur Utama
 
 ### 1. Transaksi Kasir (POS) yang Cepat & Intuitif
 - **Pencarian Cepat & Barcode**: Input produk via scanner barcode atau pencarian nama produk secara instan.
@@ -45,7 +45,7 @@ Sistem Informasi Kasir dan Manajemen Inventaris Berbasis Web untuk **Kantin Ibnu
 
 ---
 
-## 🛠 Arsitektur & Tech Stack
+## Arsitektur & Tech Stack
 
 | Komponen | Teknologi | Keterangan |
 | :--- | :--- | :--- |
@@ -58,19 +58,7 @@ Sistem Informasi Kasir dan Manajemen Inventaris Berbasis Web untuk **Kantin Ibnu
 
 ---
 
-## 🔑 Akun Pengguna Bawaan
-
-Aplikasi menggunakan autentikasi **Username** (ID unik numerik) dan **Password**:
-
-| Role | Nama Lengkap | Username | Password | Hak Akses |
-| :--- | :--- | :---: | :---: | :--- |
-| **Admin** | Ummi Hj. Romlah Dana Sidiq Lc | `84921` | `84921` | Akses Penuh (Master Data, Laporan, Admin) |
-| **Kasir 1** | Raudhatul Abila Sunarya | `39147` | `39147` | Kasir & Operasional Transaksi Harian |
-| **Kasir 2** | Alya Nur Fadhilah | `72583` | `72583` | Kasir & Operasional Transaksi Harian |
-
----
-
-## 💻 Instalasi & Menjalankan di Lokal
+## Instalasi & Menjalankan di Lokal
 
 ### Prasyarat
 - PHP >= 8.2 (dengan ekstensi `pdo_mysql`, `bcmath`, `intl`, `mbstring`, `fileinfo`)
@@ -125,7 +113,7 @@ Aplikasi menggunakan autentikasi **Username** (ID unik numerik) dan **Password**
 
 ---
 
-## 🗄 Struktur Database & Relasi
+## Struktur Database & Relasi
 
 Aplikasi ini memiliki 17 tabel migrasi utama:
 1. `users` & `roles`: Autentikasi dan hak akses role (`Admin` vs `Kasir`).
@@ -141,7 +129,7 @@ Aplikasi ini memiliki 17 tabel migrasi utama:
 
 ---
 
-## 🖨 Fitur Cetak Struk Kasir
+## Fitur Cetak Struk Kasir
 
 Karena aplikasi di-deploy di cloud publik (HTTPS) pada platform Vercel, pencetakan struk dirancang ramah cloud dan perangkat kasir:
 - Menggunakan **Standard Browser Print Dialog** (`window.print()`) yang dikombinasikan dengan stylesheet khusus `@media print`.
@@ -153,7 +141,7 @@ Karena aplikasi di-deploy di cloud publik (HTTPS) pada platform Vercel, pencetak
 
 ---
 
-## ☁ Panduan Deployment Cloud
+## Panduan Deployment Cloud
 
 Aplikasi ini menggunakan perpaduan **Vercel** (sebagai serverless web application container) dan **Aiven.io** (sebagai managed cloud MySQL).
 
@@ -183,7 +171,7 @@ CACHE_STORE=database
 
 ---
 
-## 🧪 Testing & Pengujian Otomatis
+## Testing & Pengujian Otomatis
 
 Proyek ini dilengkapi dengan pengujian otomatis komprehensif menggunakan **Pest PHP / PHPUnit**:
 ```bash
@@ -195,7 +183,7 @@ php artisan test
 
 ---
 
-## 👨‍💻 Tim Pengembang & Kontak
+## Tim Pengembang & Kontak
 - **Proyek**: Sistem Informasi Kasir Kantin Ibnunnafis
 - **Tujuan**: Penugasan & Digitalisasi Operasional Kantin Pondok Pesantren
 - **Lisensi**: Open-source untuk kebutuhan edukasi dan operasional pesantren.
