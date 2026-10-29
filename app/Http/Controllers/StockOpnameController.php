@@ -9,6 +9,7 @@ use App\Models\StockOpname;
 use App\Models\StockOpnameItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class StockOpnameController extends Controller
 {
@@ -91,10 +92,22 @@ class StockOpnameController extends Controller
             'opname_date' => ['required', 'date'],
             'notes' => ['nullable', 'string', 'max:500'],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.product_id' => ['required', 'exists:products,id'],
+            'items.*.product_id' => ['required', 'integer', 'distinct'],
             'items.*.physical_stock' => ['required', 'numeric', 'min:0'],
             'items.*.notes' => ['nullable', 'string', 'max:255'],
         ]);
+
+        $productIds = collect($validated['items'])
+            ->pluck('product_id')
+            ->map(static fn ($id) => (int) $id)
+            ->values();
+        $existingProductIds = Product::whereIn('id', $productIds)->pluck('id');
+
+        if ($existingProductIds->count() !== $productIds->count()) {
+            throw ValidationException::withMessages([
+                'items' => 'Salah satu produk pada stock opname sudah tidak tersedia.',
+            ]);
+        }
 
         $stockOpname = DB::transaction(function () use ($validated) {
             $opname = StockOpname::create([
@@ -104,27 +117,43 @@ class StockOpnameController extends Controller
                 'notes' => $validated['notes'] ?? 'Stock opname fisik gudang & rak kasir',
             ]);
 
+            $productIds = collect($validated['items'])->pluck('product_id');
+            $products = Product::whereIn('id', $productIds)
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('id');
+            $items = [];
+            $movements = [];
+            $productUpdates = [];
+            $timestamp = now();
+
             foreach ($validated['items'] as $itemData) {
-                $product = Product::lockForUpdate()->findOrFail($itemData['product_id']);
+                $product = $products->get((int) $itemData['product_id']);
                 $systemStock = (float) $product->current_stock;
                 $physicalStock = (float) $itemData['physical_stock'];
                 // Keep both the opname and movement values at database precision.
                 $difference = round($physicalStock - $systemStock, 2);
 
-                StockOpnameItem::create([
+                $items[] = [
                     'stock_opname_id' => $opname->id,
                     'product_id' => $product->id,
                     'system_stock' => $systemStock,
                     'physical_stock' => $physicalStock,
                     'difference' => $difference,
                     'notes' => $itemData['notes'] ?? null,
-                ]);
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ];
 
                 // Jika ada selisih, update stok produk dan catat di StockMovement
                 if (abs($difference) > 0.0001) {
-                    $product->update(['current_stock' => $physicalStock]);
+                    $productUpdates[] = [
+                        'id' => $product->id,
+                        'current_stock' => $physicalStock,
+                        'updated_at' => $timestamp,
+                    ];
 
-                    StockMovement::create([
+                    $movements[] = [
                         'product_id' => $product->id,
                         'user_id' => auth()->id(),
                         'type' => 'ADJUSTMENT',
@@ -134,8 +163,35 @@ class StockOpnameController extends Controller
                         'stock_before' => $systemStock,
                         'stock_after' => $physicalStock,
                         'notes' => 'Stock Opname: '.($itemData['notes'] ?: ($difference < 0 ? 'Penyesuaian stok berkurang' : 'Penyesuaian stok bertambah')),
-                    ]);
+                        'created_at' => $timestamp,
+                    ];
                 }
+            }
+
+            StockOpnameItem::insert($items);
+
+            if ($productUpdates !== []) {
+                $caseSql = collect($productUpdates)
+                    ->map(static fn () => 'WHEN ? THEN ?')
+                    ->implode(' ');
+                $bindings = [];
+
+                foreach ($productUpdates as $productUpdate) {
+                    $bindings[] = $productUpdate['id'];
+                    $bindings[] = $productUpdate['current_stock'];
+                }
+
+                $bindings[] = $timestamp;
+                $bindings = array_merge($bindings, collect($productUpdates)->pluck('id')->all());
+
+                DB::update(
+                    'UPDATE products SET current_stock = CASE id '.$caseSql.' END, updated_at = ? WHERE id IN ('.implode(',', array_fill(0, count($productUpdates), '?')).')',
+                    $bindings
+                );
+            }
+
+            if ($movements !== []) {
+                StockMovement::insert($movements);
             }
 
             return $opname;
