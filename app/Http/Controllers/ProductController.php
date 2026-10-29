@@ -27,7 +27,7 @@ class ProductController extends Controller
         if ($search !== '') {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('sku', 'like', "%{$search}%");
+                    ->orWhere('sku', 'like', "%{$search}%");
             });
         }
 
@@ -36,14 +36,14 @@ class ProductController extends Controller
         }
 
         if ($activeStatus !== 'all' && in_array($activeStatus, ['0', '1'], true)) {
-            $query->where('is_active', (bool)$activeStatus);
+            $query->where('is_active', (bool) $activeStatus);
         }
 
         if ($stockStatus === 'aman') {
             $query->whereColumn('current_stock', '>', 'minimum_stock');
         } elseif ($stockStatus === 'menipis') {
             $query->whereColumn('current_stock', '<=', 'minimum_stock')
-                  ->where('current_stock', '>', 0);
+                ->where('current_stock', '>', 0);
         } elseif ($stockStatus === 'habis') {
             $query->where('current_stock', '<=', 0);
         }
@@ -63,6 +63,7 @@ class ProductController extends Controller
 
         $categories = Category::orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
+        $returnQuery = $request->only(['page', 'search', 'category_id', 'stock_status', 'is_active']);
 
         return view('products.index', compact(
             'products',
@@ -75,16 +76,18 @@ class ProductController extends Controller
             'totalProducts',
             'activeProducts',
             'lowStockCount',
-            'outOfStockCount'
+            'outOfStockCount',
+            'returnQuery'
         ));
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
         $categories = Category::orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
+        $returnQuery = $request->only(['page', 'search', 'category_id', 'stock_status', 'is_active']);
 
-        return view('products.create', compact('categories', 'units'));
+        return view('products.create', compact('categories', 'units', 'returnQuery'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -113,7 +116,7 @@ class ProductController extends Controller
             'conversion_factor.required_with' => 'Nilai konversi wajib diisi jika satuan pembelian dipilih.',
         ]);
 
-        $initialStock = (float)($validated['current_stock'] ?? 0);
+        $initialStock = (float) ($validated['current_stock'] ?? 0);
         $imagePath = $request->file('image')?->store('products', 'public');
 
         DB::transaction(function () use ($validated, $initialStock, $imagePath) {
@@ -122,7 +125,7 @@ class ProductController extends Controller
                 'base_unit_id' => $validated['base_unit_id'],
                 'name' => $validated['name'],
                 'image_path' => $imagePath,
-                'sku' => $validated['sku'] ?: null,
+                'sku' => $validated['sku'] ?? null,
                 'purchase_price' => $validated['purchase_price'],
                 'selling_price' => $validated['selling_price'],
                 'current_stock' => $initialStock,
@@ -131,7 +134,7 @@ class ProductController extends Controller
             ]);
 
             // Save multi-unit conversion if configured
-            if (!empty($validated['conversion_unit_id']) && !empty($validated['conversion_factor'])) {
+            if (! empty($validated['conversion_unit_id']) && ! empty($validated['conversion_factor'])) {
                 ProductUnit::create([
                     'product_id' => $product->id,
                     'unit_id' => $validated['conversion_unit_id'],
@@ -155,7 +158,7 @@ class ProductController extends Controller
             }
         });
 
-        return redirect()->route('products.index')
+        return redirect()->route('products.index', $this->productIndexQuery($request))
             ->with('success', "Produk '{$validated['name']}' berhasil ditambahkan ke katalog.");
     }
 
@@ -165,7 +168,7 @@ class ProductController extends Controller
             'category',
             'baseUnit',
             'productUnits.unit',
-            'stockMovements' => fn($q) => $q->with('user')->latest()->take(10),
+            'stockMovements' => fn ($q) => $q->with('user')->latest()->take(10),
         ]);
 
         return view('products.show', compact('product'));
@@ -177,7 +180,9 @@ class ProductController extends Controller
         $units = Unit::orderBy('name')->get();
         $conversion = $product->productUnits()->first();
 
-        return view('products.edit', compact('product', 'categories', 'units', 'conversion'));
+        $returnQuery = request()->only(['page', 'search', 'category_id', 'stock_status', 'is_active']);
+
+        return view('products.edit', compact('product', 'categories', 'units', 'conversion', 'returnQuery'));
     }
 
     public function update(Request $request, Product $product): RedirectResponse
@@ -185,7 +190,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:150'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-            'sku' => ['nullable', 'string', 'max:50', 'unique:products,sku,' . $product->id],
+            'sku' => ['nullable', 'string', 'max:50', 'unique:products,sku,'.$product->id],
             'category_id' => ['required', 'exists:categories,id'],
             'base_unit_id' => ['required', 'exists:units,id'],
             'purchase_price' => ['required', 'numeric', 'min:0'],
@@ -217,7 +222,7 @@ class ProductController extends Controller
                 'base_unit_id' => $validated['base_unit_id'],
                 'name' => $validated['name'],
                 'image_path' => $newImagePath ?: $product->image_path,
-                'sku' => $validated['sku'] ?: null,
+                'sku' => $validated['sku'] ?? null,
                 'purchase_price' => $validated['purchase_price'],
                 'selling_price' => $validated['selling_price'],
                 'minimum_stock' => $validated['minimum_stock'],
@@ -225,7 +230,7 @@ class ProductController extends Controller
             ]);
 
             // Update or remove conversion unit
-            if (!empty($validated['conversion_unit_id']) && !empty($validated['conversion_factor'])) {
+            if (! empty($validated['conversion_unit_id']) && ! empty($validated['conversion_factor'])) {
                 ProductUnit::updateOrCreate(
                     ['product_id' => $product->id],
                     [
@@ -238,13 +243,33 @@ class ProductController extends Controller
             }
         });
 
-        return redirect()->route('products.index')
+        return redirect()->route('products.index', $this->productIndexQuery($request))
             ->with('success', "Data produk '{$product->name}' berhasil diperbarui.");
+    }
+
+    /**
+     * Keep the product list context after a mutation.
+     */
+    private function productIndexQuery(Request $request): array
+    {
+        $query = $request->input('return_query', []);
+
+        if (! is_array($query)) {
+            return [];
+        }
+
+        return array_filter(
+            array_intersect_key(
+                $query,
+                array_flip(['page', 'search', 'category_id', 'stock_status', 'is_active'])
+            ),
+            static fn ($value) => $value !== null && $value !== ''
+        );
     }
 
     public function toggleStatus(Product $product): RedirectResponse
     {
-        $product->is_active = !$product->is_active;
+        $product->is_active = ! $product->is_active;
         $product->save();
 
         $statusStr = $product->is_active ? 'Diaktifkan' : 'Dinonaktifkan';

@@ -18,8 +18,8 @@ class StockOpnameController extends Controller
     public function index(Request $request)
     {
         $startDate = $request->get('start_date', '');
-        $endDate   = $request->get('end_date', '');
-        $search    = $request->get('search', '');
+        $endDate = $request->get('end_date', '');
+        $search = $request->get('search', '');
 
         $query = StockOpname::with(['user', 'items.product'])
             ->latest('opname_date');
@@ -35,9 +35,9 @@ class StockOpnameController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('notes', 'like', "%{$search}%")
-                  ->orWhereHas('user', function ($uq) use ($search) {
-                      $uq->where('name', 'like', "%{$search}%");
-                  });
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -76,7 +76,7 @@ class StockOpnameController extends Controller
             $query->where('category_id', $categoryId);
         }
 
-        $products   = $query->get();
+        $products = $query->get();
         $categories = Category::orderBy('name')->get();
 
         return view('stock-opname.create', compact('products', 'categories', 'categoryId'));
@@ -88,35 +88,36 @@ class StockOpnameController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'opname_date'               => ['required', 'date'],
-            'notes'                     => ['nullable', 'string', 'max:500'],
-            'items'                     => ['required', 'array', 'min:1'],
-            'items.*.product_id'        => ['required', 'exists:products,id'],
-            'items.*.physical_stock'    => ['required', 'numeric', 'min:0'],
-            'items.*.notes'             => ['nullable', 'string', 'max:255'],
+            'opname_date' => ['required', 'date'],
+            'notes' => ['nullable', 'string', 'max:500'],
+            'items' => ['required', 'array', 'min:1'],
+            'items.*.product_id' => ['required', 'exists:products,id'],
+            'items.*.physical_stock' => ['required', 'numeric', 'min:0'],
+            'items.*.notes' => ['nullable', 'string', 'max:255'],
         ]);
 
         $stockOpname = DB::transaction(function () use ($validated) {
             $opname = StockOpname::create([
-                'user_id'     => auth()->id(),
+                'user_id' => auth()->id(),
                 'opname_date' => $validated['opname_date'],
-                'status'      => 'COMPLETED',
-                'notes'       => $validated['notes'] ?? 'Stock opname fisik gudang & rak kasir',
+                'status' => 'COMPLETED',
+                'notes' => $validated['notes'] ?? 'Stock opname fisik gudang & rak kasir',
             ]);
 
             foreach ($validated['items'] as $itemData) {
                 $product = Product::lockForUpdate()->findOrFail($itemData['product_id']);
-                $systemStock   = (float) $product->current_stock;
+                $systemStock = (float) $product->current_stock;
                 $physicalStock = (float) $itemData['physical_stock'];
-                $difference    = $physicalStock - $systemStock;
+                // Keep both the opname and movement values at database precision.
+                $difference = round($physicalStock - $systemStock, 2);
 
                 StockOpnameItem::create([
                     'stock_opname_id' => $opname->id,
-                    'product_id'      => $product->id,
-                    'system_stock'    => $systemStock,
-                    'physical_stock'  => $physicalStock,
-                    'difference'      => $difference,
-                    'notes'           => $itemData['notes'] ?? null,
+                    'product_id' => $product->id,
+                    'system_stock' => $systemStock,
+                    'physical_stock' => $physicalStock,
+                    'difference' => $difference,
+                    'notes' => $itemData['notes'] ?? null,
                 ]);
 
                 // Jika ada selisih, update stok produk dan catat di StockMovement
@@ -124,15 +125,15 @@ class StockOpnameController extends Controller
                     $product->update(['current_stock' => $physicalStock]);
 
                     StockMovement::create([
-                        'product_id'     => $product->id,
-                        'user_id'        => auth()->id(),
-                        'type'           => 'ADJUSTMENT',
+                        'product_id' => $product->id,
+                        'user_id' => auth()->id(),
+                        'type' => 'ADJUSTMENT',
                         'reference_type' => StockOpname::class,
-                        'reference_id'   => $opname->id,
-                        'quantity'       => $difference,
-                        'stock_before'   => $systemStock,
-                        'stock_after'    => $physicalStock,
-                        'notes'          => 'Stock Opname: ' . ($itemData['notes'] ?: ($difference < 0 ? 'Penyesuaian stok berkurang' : 'Penyesuaian stok bertambah')),
+                        'reference_id' => $opname->id,
+                        'quantity' => $difference,
+                        'stock_before' => $systemStock,
+                        'stock_after' => $physicalStock,
+                        'notes' => 'Stock Opname: '.($itemData['notes'] ?: ($difference < 0 ? 'Penyesuaian stok berkurang' : 'Penyesuaian stok bertambah')),
                     ]);
                 }
             }
@@ -151,8 +152,8 @@ class StockOpnameController extends Controller
     {
         $stockOpname->load(['user', 'items.product.category', 'items.product.baseUnit']);
 
-        $totalChecked       = $stockOpname->items->count();
-        $totalMatched       = $stockOpname->items->where('difference', 0)->count();
+        $totalChecked = $stockOpname->items->count();
+        $totalMatched = $stockOpname->items->where('difference', 0)->count();
         $totalDiscrepancies = $stockOpname->items->where('difference', '!=', 0)->count();
 
         // Hitung estimasi nilai selisih nominal (Rp) berdasarkan harga beli produk

@@ -10,6 +10,9 @@
         <form action="{{ route('products.update', $product) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+            @foreach($returnQuery as $key => $value)
+                <input type="hidden" name="return_query[{{ $key }}]" value="{{ $value }}">
+            @endforeach
 
             <!-- CARD 1: INFORMASI IDENTITAS PRODUK -->
             <div class="card border-0 shadow-sm rounded-3 mb-4">

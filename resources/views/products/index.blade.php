@@ -78,7 +78,7 @@
             </div>
 
             @if(auth()->user()->isKasir())
-            <a href="{{ route('products.create') }}" class="btn btn-primary btn-sm d-flex align-items-center gap-2" style="background: var(--primary); border-color: var(--primary);">
+            <a href="{{ route('products.create', $returnQuery) }}" class="btn btn-primary btn-sm d-flex align-items-center gap-2" style="background: var(--primary); border-color: var(--primary);">
                 <iconify-icon icon="lucide:plus"></iconify-icon>
                 Tambah Produk Baru
             </a>
@@ -222,7 +222,7 @@
                                 </a>
 
                                 @if(auth()->user()->isKasir())
-                                <a href="{{ route('products.edit', $prod) }}" class="btn btn-outline-secondary btn-sm p-1 d-inline-flex align-items-center justify-content-center" title="Edit Produk">
+                                <a href="{{ route('products.edit', array_merge(['product' => $prod], $returnQuery)) }}" class="btn btn-outline-secondary btn-sm p-1 d-inline-flex align-items-center justify-content-center" title="Edit Produk">
                                     <iconify-icon icon="lucide:pencil" class="fs-6"></iconify-icon>
                                 </a>
 

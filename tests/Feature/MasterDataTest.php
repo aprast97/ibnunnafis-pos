@@ -196,4 +196,48 @@ class MasterDataTest extends TestCase
         $detailResponse->assertSee($product->name);
         $detailResponse->assertDontSee('Edit Produk');
     }
+
+    public function test_product_mutations_keep_the_current_catalog_page(): void
+    {
+        $category = Category::first();
+        $unit = Unit::first();
+
+        for ($index = 1; $index <= 16; $index++) {
+            Product::create([
+                'category_id' => $category->id,
+                'base_unit_id' => $unit->id,
+                'name' => "Produk Pagination {$index}",
+                'purchase_price' => 1000,
+                'selling_price' => 1500,
+                'current_stock' => 10,
+                'minimum_stock' => 5,
+                'is_active' => true,
+            ]);
+        }
+
+        $product = Product::orderBy('name')->skip(15)->first();
+        $this->assertNotNull($product);
+
+        $pageResponse = $this->actingAs($this->kasir)
+            ->get(route('products.index', ['page' => 2]));
+
+        $pageResponse->assertStatus(200)
+            ->assertSee(route('products.edit', [
+                'product' => $product,
+                'page' => 2,
+            ]), false);
+
+        $updateResponse = $this->actingAs($this->kasir)
+            ->put(route('products.update', $product), [
+                'name' => $product->name . ' Updated',
+                'category_id' => $category->id,
+                'base_unit_id' => $unit->id,
+                'purchase_price' => 1000,
+                'selling_price' => 1500,
+                'minimum_stock' => 5,
+                'return_query' => ['page' => 2],
+            ]);
+
+        $updateResponse->assertRedirect(route('products.index', ['page' => 2]));
+    }
 }

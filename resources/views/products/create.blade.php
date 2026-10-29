@@ -9,6 +9,9 @@
     <div class="col-12 col-xl-9">
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @foreach($returnQuery as $key => $value)
+                <input type="hidden" name="return_query[{{ $key }}]" value="{{ $value }}">
+            @endforeach
 
             <!-- CARD 1: INFORMASI IDENTITAS PRODUK -->
             <div class="card border-0 shadow-sm rounded-3 mb-4">
